@@ -4,6 +4,8 @@ import { Movie } from '../typing'
 import { baseUrl } from '../consts/movie'
 import { FaPlay } from 'react-icons/fa'
 import { InformationCircleIcon } from '@heroicons/react/outline'
+import { useRecoilState } from 'recoil'
+import { modelstate, moviestate } from '../atoms/atom'
 interface Props {
   netflixOriginals :Movie[]
 }
@@ -18,6 +20,9 @@ function Baner({netflixOriginals}:Props) {
     )
   }, [netflixOriginals])
 console.log(movie);
+
+const [model,setmodel] = useRecoilState(modelstate)
+const [Cmovie,setmovie] = useRecoilState(moviestate)
 
 
   return (
@@ -41,7 +46,10 @@ console.log(movie);
         <FaPlay className="h-4 w-4 text-black md:h-7 md:w-7" />
         Play
       </button>
-      <button className="bannerButton bg-[gray]/70" >
+      <button onClick={()=>{
+        setmodel(true);
+        setmovie(movie)
+      }} className="bannerButton bg-[gray]/70" >
           <InformationCircleIcon className="h-5 w-5 md:h-8 md:w-8" /> More Info
         </button>
         </div>

@@ -4,6 +4,10 @@ import Baner from '../components/Baner'
 import requests from '../utils/request'
 import { Movie } from '../typing'
 import Row from '../components/Row'
+import useAuth from '../hooks/useAuth'
+import { useRecoilValue } from 'recoil'
+import { modelstate } from '../atoms/atom'
+import Model from '../components/Model'
 interface Props {
   netflixOriginals: Movie[]
   trendingNow: Movie[]
@@ -23,7 +27,10 @@ const Home = ({
   romanceMovies,
   topRated,
   trendingNow,} :Props) => {
+const {loading} = useAuth()
+const model = useRecoilValue(modelstate)
 
+if(loading) return "Lodaing..."
   
   return (
     <div className="relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh]">
@@ -45,6 +52,7 @@ const Home = ({
           <Row title="Documentaries" movies={documentaries} />
        </section>
      </main>
+     {model && <Model/>}
     </div>
   )
 }
