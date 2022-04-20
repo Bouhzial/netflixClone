@@ -19,7 +19,7 @@ function Baner({netflixOriginals}:Props) {
       netflixOriginals[Math.floor(Math.random() * netflixOriginals.length)]
     )
   }, [netflixOriginals])
-console.log(movie);
+
 
 const [model,setmodel] = useRecoilState(modelstate)
 const [Cmovie,setmovie] = useRecoilState(moviestate)

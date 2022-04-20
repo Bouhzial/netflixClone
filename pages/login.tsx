@@ -72,7 +72,7 @@ interface Inputs {
 
             <div className='text-[gray]/95'>
                 New To Netflix?{" "}
-                <button type='submit' className='text-white hover:underline'>Sign Up Now</button>
+                <button onClick={()=>{setlogin(false)}} type='submit' className='text-white hover:underline'>Sign Up Now</button>
             </div>
         </form>
         
