@@ -8,6 +8,7 @@ import useAuth from '../hooks/useAuth'
 import { useRecoilValue } from 'recoil'
 import { modelstate } from '../atoms/atom'
 import Model from '../components/Model'
+
 interface Props {
   netflixOriginals: Movie[]
   trendingNow: Movie[]
@@ -26,11 +27,14 @@ const Home = ({
   horrorMovies,
   romanceMovies,
   topRated,
-  trendingNow,} :Props) => {
+  trendingNow,
+} :Props) => {
 const {loading} = useAuth()
 const model = useRecoilValue(modelstate)
 
 if(loading) return "Lodaing..."
+
+
   
   return (
     <div className="relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh]">
