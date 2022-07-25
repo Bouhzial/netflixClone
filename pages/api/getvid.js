@@ -10,8 +10,7 @@ export default async function defineEventHandler(req, res) {
       .then(function (html) {
         const regex = /(\b(magnet:\?xt=)[^"]*)/i
         const found = html.match(regex)
-        console.log('fetched')
-        res.status(200).json(found[0])
+        res.status(200).json({ found })
       })
       .catch(function (err) {
         console.warn('Something went wrong.', err)
