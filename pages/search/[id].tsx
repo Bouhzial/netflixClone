@@ -47,7 +47,7 @@ export default function id({movies}:any) {
  
 <main className='relative'>
  <Baner netflixOriginals={movies.results}/>
- <section className='grid grid-cols-4 grid-flow-row gap-4'>
+ <section className='grid grid-cols-2 grid-flow-row gap-4 lg:grid-cols-7 md:grid-cols-4'>
  {movies.results.map((movie:any) => (
               <Thumbnail key={movie.id} movie={movie} />
             ))}

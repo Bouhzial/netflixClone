@@ -3,6 +3,7 @@ import { useRecoilState } from 'recoil'
 import { modelstate, moviestate } from '../atoms/atom'
 import ReactPlayer from 'react-player/lazy'
 import { FaPlay } from 'react-icons/fa'
+
 import {
   CheckIcon,
   PlusIcon,
@@ -13,6 +14,7 @@ import {
 } from '@heroicons/react/outline'
 import { Element, Genre, Movie } from '../typing'
 import MuiModal from '@mui/material/Modal'
+
 
 
 function Modal() {
@@ -55,14 +57,21 @@ function Modal() {
   }
   async function play(){
       const title = movie?.original_title
+      
       const response = await fetch('api/getvid',
       {
         method:'POST',
         body:JSON.stringify(title),
-        headers:{'Content-type':'aplication/json'}
+        headers:{'Content-type':'aplication/json','Accept': 'application/json'}
       })
-       const data = await response.json()
-       console.log(data + response)
+      const data = await response.json()
+      const magnet = data.found[0]
+
+      
+      
+      
+      
+      
       
   }
 
@@ -150,6 +159,7 @@ function Modal() {
             </div>
           </div>
         </div>
+        <div id="player" className="webtor" />
       </>
     </MuiModal>
   )
