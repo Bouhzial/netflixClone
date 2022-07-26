@@ -63,7 +63,7 @@ async function searchMovie (){
 
         <div className='flex items-center space-x-4 text-sm font-light'>
             <div className={`flex items-center justify-center h-10 pl-1 ${search? 'border border-white': ''}`}>
-                  <SearchIcon onClick={()=>{!search?setSearch(true):searchMovie()}} className=" sm:inline w-6 h-6 cursor-pointer"/>
+                  <SearchIcon onClick={()=>{!search?setSearch(true):searchMovie()}} className="w-6 h-6 cursor-pointer"/>
                               {search?
                               <div className='flex'>
                               <input className='w-36 bg-transparent text-white border-opacity-0 outline-none'

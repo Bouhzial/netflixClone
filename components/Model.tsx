@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
-import { modelstate, moviestate } from '../atoms/atom'
+import { modelstate, moviestate,magentlink } from '../atoms/atom'
 import ReactPlayer from 'react-player/lazy'
 import { FaPlay } from 'react-icons/fa'
-
 import {
   CheckIcon,
   PlusIcon,
@@ -14,6 +13,7 @@ import {
 } from '@heroicons/react/outline'
 import { Element, Genre, Movie } from '../typing'
 import MuiModal from '@mui/material/Modal'
+import Router  from 'next/router'
 
 
 
@@ -21,9 +21,11 @@ function Modal() {
   const [movie, setMovie] = useRecoilState(moviestate)
   const [trailer, setTrailer] = useState('')
   const [showModal, setShowModal] = useRecoilState(modelstate)
+  const [magent, setmagent] = useRecoilState(magentlink)
   const [muted, setMuted] = useState(false)
   const [genres, setGenres] = useState<Genre[]>([])
   const [addedToList, setAddedToList] = useState(false)
+  const [playing,setplaying]=useState(false)
 
 
   useEffect(() => {
@@ -65,14 +67,8 @@ function Modal() {
         headers:{'Content-type':'aplication/json','Accept': 'application/json'}
       })
       const data = await response.json()
-      const magnet = data.found[0]
-
-      
-      
-      
-      
-      
-      
+      setmagent( data.found[0])
+      Router.push('/playing') 
   }
 
 
