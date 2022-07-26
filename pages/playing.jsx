@@ -26,7 +26,7 @@ export default function vedio() {
           {
               srclang: 'en',
               label: 'test',
-              src: 'https://raw.githubusercontent.com/andreyvit/subtitle-tools/master/sample.srt',
+              src: movie.poster_path,
               default: true,
           }
       ],
@@ -52,7 +52,7 @@ export default function vedio() {
       <script src="https://cdn.jsdelivr.net/npm/@webtor/player-sdk-js/dist/index.min.js" charSet='utf-8' async></script>
       </Helmet>
     
-    <div id="player" className='webtor'/>
+    <div id="player" className='h-full max-w-full'/>
 
     </div>
   )
