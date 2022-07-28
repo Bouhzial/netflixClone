@@ -45,15 +45,15 @@ export default function id({movies}:any) {
 </Head>
 <Header/>
  
-<main className='relative'>
- <Baner netflixOriginals={movies.results}/>
- <section className='grid grid-cols-2 grid-flow-row gap-4 lg:grid-cols-7 md:grid-cols-4'>
- {movies.results.map((movie:any) => (
+      <main className='relative pl-4 pb-24 lg:space-y-24 lg:pl-16'>
+ <Baner netflixOriginals={movies.results} searched={false}/>
+        <section className='grid grid-rows-10 lg:grid-rows-4 md:grid-rows-5 grid-flow-col gap-5 pr-4 lg:pr-16  '>
+         {movies.results.map((movie:any) => (
               <Thumbnail key={movie.id} movie={movie} />
             ))}
  </section>
 </main>
-{model && <Model/>}
+{model && <Model searched/>}
 </div>
   )
 }

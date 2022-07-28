@@ -15,9 +15,11 @@ import { Element, Genre, Movie } from '../typing'
 import MuiModal from '@mui/material/Modal'
 import Router  from 'next/router'
 
+interface Props {
+  searched:Boolean
+}
 
-
-function Modal() {
+function Modal({searched}:Props) {
   const [movie, setMovie] = useRecoilState(moviestate)
   const [trailer, setTrailer] = useState('')
   const [showModal, setShowModal] = useRecoilState(modelstate)
@@ -25,12 +27,12 @@ function Modal() {
   const [muted, setMuted] = useState(false)
   const [genres, setGenres] = useState<Genre[]>([])
   const [addedToList, setAddedToList] = useState(false)
-  const [playing,setplaying]=useState(false)
+  const [season,setseason]=useState(0)
+  const [Nseason,setNseason]=useState(0)
 
 
   useEffect(() => {
     if (!movie) return
-
     async function fetchMovie() {
       const data = await fetch(
         `https://api.themoviedb.org/3/${
@@ -58,9 +60,18 @@ function Modal() {
     setMovie(null)
   }
   async function play(){
+
+    /*if (movie?.media_type == 'tv') {
+      console.log(movie);
+      const res = await fetch(`https://api.themoviedb.org/3/tv/${movie.id}?api_key=${process.env.NEXT_PUBLIC_API_KEY}`)
+     const data = await res.json()
+      setNseason( data.number_of_seasons)
+
+    } else {*/
       const title = movie?.original_title
-      
-      const response = await fetch('api/getvid',
+    console.log(title);
+    
+      const response = await fetch(`${searched?'../api/getvid':'api/getvid'}`,
       {
         method:'POST',
         body:JSON.stringify(title),
@@ -68,7 +79,7 @@ function Modal() {
       })
       const data = await response.json()
       setmagent( data.found[0])
-      Router.push('/playing') 
+      Router.push('/playing')
   }
 
 
@@ -97,7 +108,15 @@ function Modal() {
           />
           <div className="absolute bottom-10 flex w-full items-center justify-between px-10">
             <div className="flex space-x-2">
-              <button onClick={()=>{play()}} className="flex items-center gap-x-2 rounded bg-white px-8 text-xl font-bold text-black transition hover:bg-[#e6e6e6]">
+              <button onClick={()=>{
+                if(movie?.media_type=='tv'){
+                
+                }
+                else{
+                  play()
+                }
+              }} 
+              className="flex items-center gap-x-2 rounded bg-white px-8 text-xl font-bold text-black transition hover:bg-[#e6e6e6]">
                 <FaPlay className="h-7 w-7 text-black" />
                 Play
               </button>
@@ -154,8 +173,17 @@ function Modal() {
               </div>
             </div>
           </div>
-        </div>
-        <div id="player" className="webtor" />
+          {movie?.media_type=='tv'?
+         <select placeholder="Season" onChange={()=>{}}>
+         <option disabled value="0">Please select one</option>
+         <template>
+           {
+              
+           }
+         </template>
+     </select>
+        :<></>}
+        </div>  
       </>
     </MuiModal>
   )

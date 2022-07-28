@@ -45,7 +45,7 @@ if(loading) return "Lodaing..."
      <Header/>
        
      <main className='relative pl-4 pb-24 lg:space-y-24 lg:pl-16'>
-       <Baner netflixOriginals={netflixOriginals}/>
+       <Baner netflixOriginals={netflixOriginals} searched={false}/>
        <section className='md:space-y-20'>
        <Row title="Trending Now" movies={trendingNow} />
           <Row title="Top Rated" movies={topRated} />
@@ -56,7 +56,7 @@ if(loading) return "Lodaing..."
           <Row title="Documentaries" movies={documentaries} />
        </section>
      </main>
-     {model && <Model/>}
+     {model && <Model searched={false}/>}
     </div>
   )
 }
