@@ -22,7 +22,10 @@ export interface Genre {
     vote_average: number
     vote_count: number
   }
-  
+  export interface Episode{
+    episode_number:number
+    name:String
+  }
   export interface Element {
     type:
       | 'Bloopers'

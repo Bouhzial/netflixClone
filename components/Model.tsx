@@ -11,7 +11,7 @@ import {
   VolumeUpIcon,
   XIcon,
 } from '@heroicons/react/outline'
-import { Element, Genre, Movie } from '../typing'
+import { Element, Genre, Movie ,Episode} from '../typing'
 import MuiModal from '@mui/material/Modal'
 import Router  from 'next/router'
 
@@ -27,8 +27,10 @@ function Modal({searched}:Props) {
   const [muted, setMuted] = useState(false)
   const [genres, setGenres] = useState<Genre[]>([])
   const [addedToList, setAddedToList] = useState(false)
-  const [season,setseason]=useState(0)
-  const [Nseason,setNseason]=useState(0)
+  const [season,setseason]=useState('1')
+  const [Nseason,setNseason]=useState(1)
+  const [episodes,setepisodes]=useState<Episode[]>([])
+  const [episode,setepisode]=useState('')
 
 
   useEffect(() => {
@@ -50,6 +52,13 @@ function Modal({searched}:Props) {
       if (data?.genres) {
         setGenres(data.genres)
       }
+      if (movie?.media_type == 'tv') {
+        const res = await fetch(`https://api.themoviedb.org/3/tv/${movie.id}?api_key=${process.env.NEXT_PUBLIC_API_KEY}`)
+       const data = await res.json()
+        setNseason( data.number_of_seasons)
+        const rese = await fetch(`https://api.themoviedb.org/3/tv/${movie?.id}/season/1?api_key=${process.env.NEXT_PUBLIC_API_KEY}`)
+        const datas = await rese.json()
+        setepisodes(datas.episodes);setepisode("1")}
     }
 
     fetchMovie()
@@ -60,15 +69,13 @@ function Modal({searched}:Props) {
     setMovie(null)
   }
   async function play(){
-
-    /*if (movie?.media_type == 'tv') {
-      console.log(movie);
-      const res = await fetch(`https://api.themoviedb.org/3/tv/${movie.id}?api_key=${process.env.NEXT_PUBLIC_API_KEY}`)
-     const data = await res.json()
-      setNseason( data.number_of_seasons)
-
-    } else {*/
-      const title = movie?.original_title
+    let title = ''
+    if (movie?.media_type == 'tv') {  
+      title = `${movie.original_title || movie.original_name} S${("0" + season).slice(-2)}E${("0" + episode).slice(-2)}`
+      console.log(episode);
+    } else {
+      title = movie?.original_title
+    }
     console.log(title);
     
       const response = await fetch(`${searched?'../api/getvid':'api/getvid'}`,
@@ -81,6 +88,14 @@ function Modal({searched}:Props) {
       setmagent( data.found[0])
       Router.push('/playing')
   }
+  const changeSeason = async (e:any) => {
+    console.log(season);
+    const res = await fetch(`https://api.themoviedb.org/3/tv/${movie?.id}/season/${season}?api_key=${process.env.NEXT_PUBLIC_API_KEY}`)
+    const data = await res.json()
+    setepisodes(data.episodes)
+    
+  }
+  
 
 
   return (
@@ -108,18 +123,31 @@ function Modal({searched}:Props) {
           />
           <div className="absolute bottom-10 flex w-full items-center justify-between px-10">
             <div className="flex space-x-2">
-              <button onClick={()=>{
-                if(movie?.media_type=='tv'){
-                
-                }
-                else{
+              <button onClick={()=>{                
                   play()
-                }
               }} 
-              className="flex items-center gap-x-2 rounded bg-white px-8 text-xl font-bold text-black transition hover:bg-[#e6e6e6]">
+              className="flex items-center gap-x-2 rounded bg-white w-32 px-8 text-xl font-bold text-black transition hover:bg-[#e6e6e6]">
                 <FaPlay className="h-7 w-7 text-black" />
                 Play
               </button>
+              {movie?.media_type=='tv'?
+              <div className='flex gap-x-2'>
+                  <select className='rounded bg-white w-32 px-8 text-xl font-bold text-black transition hover:bg-[#e6e6e6]' onChange={(e) => {setseason(e.target.value);changeSeason(e)}}>
+           {
+           Array.from({length: Nseason}, (_, index) => {  
+           return <option className='w-32 px-8 text-xl font-bold text-black transition hover:bg-[#e6e6e6]' value={index+1}>{index+1}</option>})
+           }
+         </select>
+         <select className='rounded bg-white w-32 px-8 text-xl font-bold text-black transition hover:bg-[#e6e6e6]' onChange={(e) => {setepisode(e.target.value)}}>
+         {
+           episodes.map((episode:Episode)=>{
+           return <option className='w-32 px-8 text-xl font-bold text-black transition hover:bg-[#e6e6e6]' value={episode.episode_number}>{episode.name}</option>
+           })
+           }
+         </select>
+              </div>
+         
+         :<></>}
               <button className="modalButton">
                 {addedToList ? (
                   <CheckIcon className="h-7 w-7" />
@@ -173,16 +201,6 @@ function Modal({searched}:Props) {
               </div>
             </div>
           </div>
-          {movie?.media_type=='tv'?
-         <select placeholder="Season" onChange={()=>{}}>
-         <option disabled value="0">Please select one</option>
-         <template>
-           {
-              
-           }
-         </template>
-     </select>
-        :<></>}
         </div>  
       </>
     </MuiModal>
